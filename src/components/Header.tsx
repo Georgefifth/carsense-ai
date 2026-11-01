@@ -22,7 +22,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenReadiness,
 }) => {
   return (
-    <header className="border-b border-carbon-700 bg-carbon-900/90 backdrop-blur sticky top-0 z-40 px-4 py-3">
+    <header className="border-b border-carbon-700 bg-carbon-900 relative z-40 px-4 py-3">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
         {/* Brand & Vehicle Info */}
         <div className="flex items-center gap-3">
@@ -71,6 +71,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Quick Toolbar */}
           <button
             onClick={onOpenInjector}
+            aria-label="Open Fault Injector"
             className="px-2.5 py-2 rounded bg-carbon-800 hover:bg-carbon-700 text-slate-300 border border-carbon-600 text-xs font-medium flex items-center gap-1.5 transition"
             title="Inject custom PID values or paste custom DTC"
           >
@@ -80,6 +81,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button
             onClick={onOpenReadiness}
+            aria-label="Open I/M Readiness Monitors"
             className="px-2.5 py-2 rounded bg-carbon-800 hover:bg-carbon-700 text-slate-300 border border-carbon-600 text-xs font-medium flex items-center gap-1.5 transition"
             title="Inspect OBD-II I/M Readiness monitors"
           >

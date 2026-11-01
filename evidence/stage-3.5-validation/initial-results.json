@@ -1,0 +1,543 @@
+{
+  "executedAt": "2026-11-01T19:08:32.320Z",
+  "totalCases": 24,
+  "carSensePassCount": 19,
+  "carSenseFailCount": 5,
+  "carSensePassRatePercent": 79.2,
+  "competitorPassCount": 7,
+  "competitorPassRatePercent": 29.2,
+  "byCategory": {
+    "Basic": {
+      "total": 5,
+      "carSensePass": 5,
+      "competitorPass": 1
+    },
+    "Intermediate": {
+      "total": 5,
+      "carSensePass": 5,
+      "competitorPass": 0
+    },
+    "Advanced": {
+      "total": 4,
+      "carSensePass": 1,
+      "competitorPass": 0
+    },
+    "Edge": {
+      "total": 4,
+      "carSensePass": 4,
+      "competitorPass": 3
+    },
+    "Negative": {
+      "total": 3,
+      "carSensePass": 3,
+      "competitorPass": 3
+    },
+    "Adversarial": {
+      "total": 3,
+      "carSensePass": 1,
+      "competitorPass": 0
+    }
+  },
+  "results": [
+    {
+      "id": "B01-nominal-cruise",
+      "category": "Basic",
+      "description": "Healthy highway cruise at 65 mph with stoichiometric fuel trims",
+      "source": "SAE J1979 Baseline",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCauseTitle": "Closed-Loop Air/Fuel Equilibrium Maintained",
+        "latencyMs": 0.366,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": true,
+        "urgency": "nominal",
+        "title": "No code provided",
+        "action": "None (ignores freeze-frame PIDs)",
+        "latencyMs": 0.003
+      }
+    },
+    {
+      "id": "B02-p0171-vacuum-leak",
+      "category": "Basic",
+      "description": "P0171 System Too Lean (Bank 1) with STFT pegged at +24.8% at idle and low MAF",
+      "source": "obd-code-lookup & elm327-obd",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "Post-MAF Intake Vacuum Leak (Cracked PCV Hose / Gasket)",
+        "latencyMs": 0.036,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "title": "System too lean (Bank 1)",
+        "latencyMs": 0.048
+      }
+    },
+    {
+      "id": "B03-p0303-cylinder-misfire",
+      "category": "Basic",
+      "description": "P0303 Cylinder 3 Misfire under 64% load with catalyst thermal risk",
+      "source": "obd-code-lookup (P0303 HIGH)",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "critical",
+        "rootCauseTitle": "Cylinder Ignition Coil / Spark Breakdown Under Load",
+        "latencyMs": 0.022,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "title": "Cylinder 3 misfire detected",
+        "latencyMs": 0.019
+      }
+    },
+    {
+      "id": "B04-p0562-alternator-sag",
+      "category": "Basic",
+      "description": "P0562 System Voltage Low with 11.4V battery discharge at idle",
+      "source": "obd-code-lookup & elm327-obd (P0562)",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "Alternator Rectifier Bridge Failure (Zero Charging Output)",
+        "latencyMs": 0.01,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "title": "System voltage low",
+        "latencyMs": 0.003
+      }
+    },
+    {
+      "id": "B05-p0a80-ev-pack-imbalance",
+      "category": "Basic",
+      "description": "P0A80 EV High Voltage Battery Pack cell brick imbalance",
+      "source": "SAE J2012 Hybrid/EV Standard",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "High Voltage Module 4 Brick Voltage Degradation (>280mV Delta)",
+        "latencyMs": 0.009,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "latencyMs": 0.005
+      }
+    },
+    {
+      "id": "I01-p0172-system-too-rich",
+      "category": "Intermediate",
+      "description": "P0172 System Too Rich (Bank 1) with deeply negative STFT (-23.5%) indicating leaking injector or stuck purge valve",
+      "source": "obd-code-lookup (P0172)",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "Diagnostic Trouble Code P0172: System Too Rich (Bank 1)",
+        "latencyMs": 0.012,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "title": "System too rich (Bank 1)",
+        "latencyMs": 0.006
+      }
+    },
+    {
+      "id": "I02-p0128-thermostat-stuck-open",
+      "category": "Intermediate",
+      "description": "P0128 Coolant Temperature Below Thermostat Regulating Temperature (66°C after 20 min highway drive)",
+      "source": "obd-code-lookup (P0128)",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "Diagnostic Trouble Code P0128: Coolant Thermostat Below Regulating Temp",
+        "latencyMs": 0.011,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "title": "Coolant temp below thermostat regulating temperature",
+        "latencyMs": 0.003
+      }
+    },
+    {
+      "id": "I03-p0420-catalyst-efficiency",
+      "category": "Intermediate",
+      "description": "P0420 Catalyst System Efficiency Below Threshold (Bank 1)",
+      "source": "obd-code-lookup & elm327-obd (P0420)",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "Diagnostic Trouble Code P0420: Catalyst System Efficiency Below Threshold (Bank 1)",
+        "latencyMs": 0.012,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "title": "Catalyst efficiency below threshold (Bank 1)",
+        "latencyMs": 0.002
+      }
+    },
+    {
+      "id": "I04-p0455-evap-gas-cap-leak",
+      "category": "Intermediate",
+      "description": "P0455 Evaporative Emission System Leak Detected (Large Leak / Loose Gas Cap)",
+      "source": "obd-code-lookup & elm327-obd (P0455)",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "Diagnostic Trouble Code P0455: EVAP System Large Leak Detected",
+        "latencyMs": 0.103,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "title": "EVAP large leak detected",
+        "latencyMs": 0.004
+      }
+    },
+    {
+      "id": "I05-p0101-maf-performance",
+      "category": "Intermediate",
+      "description": "P0101 Mass Air Flow Sensor Range/Performance Problem",
+      "source": "obd-code-lookup (P0101)",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "Diagnostic Trouble Code P0101: Mass Air Flow Circuit Range/Performance",
+        "latencyMs": 0.027,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "title": "MAF sensor range/performance problem",
+        "latencyMs": 0.005
+      }
+    },
+    {
+      "id": "A01-dual-bank-lean-p0171-p0174",
+      "category": "Advanced",
+      "description": "Simultaneous P0171 (Bank 1 Lean) + P0174 (Bank 2 Lean) on V6 engine confirming shared upstream intake/MAF leak",
+      "source": "obd-code-lookup (P0171 + P0174 V6 Shared Intake)",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "Post-MAF Intake Vacuum Leak (Cracked PCV Hose / Gasket)",
+        "latencyMs": 0.016,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "title": "System too lean (Bank 1)",
+        "latencyMs": 0.005
+      }
+    },
+    {
+      "id": "A02-unlatched-severe-overheating",
+      "category": "Advanced",
+      "description": "Engine boiling at 119°C coolant temperature BEFORE ECU latches a confirmed DTC code",
+      "source": "elm327-obd (P0217 Overtemperature STOP condition)",
+      "carSense": {
+        "passed": false,
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCauseTitle": "Closed-Loop Air/Fuel Equilibrium Maintained",
+        "latencyMs": 0.015,
+        "failureReasons": [
+          "Expected urgency \"critical\", got \"nominal\"",
+          "Root cause output \"Closed-Loop Air/Fuel Equilibrium Maintained\" did not match pattern /Overheat|Coolant|Thermal|Water Pump/i"
+        ]
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "nominal",
+        "title": "No code provided",
+        "action": "None (ignores freeze-frame PIDs)",
+        "latencyMs": 0.001
+      }
+    },
+    {
+      "id": "A03-p0524-oil-pressure-too-low",
+      "category": "Advanced",
+      "description": "P0524 Engine Oil Pressure Too Low — immediate mechanical seizure risk",
+      "source": "elm327-obd (P0524 Mandatory STOP list)",
+      "carSense": {
+        "passed": false,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "Diagnostic Trouble Code P0524: Engine Oil Pressure Too Low",
+        "latencyMs": 0.01,
+        "failureReasons": [
+          "Expected urgency \"critical\", got \"caution\""
+        ]
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "latencyMs": 0.031
+      }
+    },
+    {
+      "id": "A04-u0100-lost-comm-ecm",
+      "category": "Advanced",
+      "description": "U0100 Lost Communication with ECM/PCM on CAN Bus",
+      "source": "obd-code-lookup (U0100 HIGH)",
+      "carSense": {
+        "passed": false,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "Diagnostic Trouble Code U0100: Lost Communication with ECM/PCM",
+        "latencyMs": 0.006,
+        "failureReasons": [
+          "Expected urgency \"critical\", got \"caution\""
+        ]
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "title": "Lost communication with ECM/PCM",
+        "latencyMs": 0.003
+      }
+    },
+    {
+      "id": "E01-key-on-engine-off",
+      "category": "Edge",
+      "description": "Key On Engine Off (RPM = 0, Voltage = 12.6V resting battery, 0 DTCs) — should NOT false-alarm as alternator failure",
+      "source": "SAE J1979 Boundary (KOEO)",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCauseTitle": "Closed-Loop Air/Fuel Equilibrium Maintained",
+        "latencyMs": 0.007,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": true,
+        "urgency": "nominal",
+        "title": "No code provided",
+        "action": "None (ignores freeze-frame PIDs)",
+        "latencyMs": 0.002
+      }
+    },
+    {
+      "id": "E02-high-rpm-redline-clean",
+      "category": "Edge",
+      "description": "Wide-open throttle 6,800 RPM track acceleration with normal temperatures and 0 DTCs",
+      "source": "SAE J1979 High-Load WOT",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCauseTitle": "Closed-Loop Air/Fuel Equilibrium Maintained",
+        "latencyMs": 0.004,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": true,
+        "urgency": "nominal",
+        "title": "No code provided",
+        "action": "None (ignores freeze-frame PIDs)",
+        "latencyMs": 0
+      }
+    },
+    {
+      "id": "E03-ev-high-voltage-nominal",
+      "category": "Edge",
+      "description": "EV cruising with 392V traction battery pack and 0 DTCs",
+      "source": "EV Telemetry Baseline",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCauseTitle": "Closed-Loop Air/Fuel Equilibrium Maintained",
+        "latencyMs": 0.002,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": true,
+        "urgency": "nominal",
+        "title": "No code provided",
+        "action": "None (ignores freeze-frame PIDs)",
+        "latencyMs": 0
+      }
+    },
+    {
+      "id": "E04-missing-pids-object-with-dtc",
+      "category": "Edge",
+      "description": "Empty pids object {} submitted alongside valid P0301 misfire DTC",
+      "source": "Partial Freeze-Frame Edge Case",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "critical",
+        "rootCauseTitle": "Cylinder Ignition Coil / Spark Breakdown Under Load",
+        "latencyMs": 0.014,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "unknown",
+        "title": "Cylinder 1 misfire detected",
+        "latencyMs": 0.001
+      }
+    },
+    {
+      "id": "N01-cold-start-warmup",
+      "category": "Negative",
+      "description": "Morning cold start at 38°C coolant temp with +3.8% STFT and 0 DTCs — must NOT trigger thermostat or lean fault",
+      "source": "SAE Open-Loop Cold Start",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCauseTitle": "Closed-Loop Air/Fuel Equilibrium Maintained",
+        "latencyMs": 0.003,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": true,
+        "urgency": "nominal",
+        "title": "No code provided",
+        "action": "None (ignores freeze-frame PIDs)",
+        "latencyMs": 0
+      }
+    },
+    {
+      "id": "N02-highway-hill-climb-load",
+      "category": "Negative",
+      "description": "Climbing mountain grade at 75% engine load, 96°C coolant, +4.2% STFT, 0 DTCs — must remain nominal",
+      "source": "Normal Highway Grade Load",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCauseTitle": "Closed-Loop Air/Fuel Equilibrium Maintained",
+        "latencyMs": 0.002,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": true,
+        "urgency": "nominal",
+        "title": "No code provided",
+        "action": "None (ignores freeze-frame PIDs)",
+        "latencyMs": 0
+      }
+    },
+    {
+      "id": "N03-smart-alternator-eco-mode",
+      "category": "Negative",
+      "description": "Modern AGM battery resting at 12.7V during coasting with 0 DTCs — must NOT false-alarm as alternator failure",
+      "source": "Modern Smart Alternator Deceleration Mode",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCauseTitle": "Closed-Loop Air/Fuel Equilibrium Maintained",
+        "latencyMs": 0.003,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": true,
+        "urgency": "nominal",
+        "title": "No code provided",
+        "action": "None (ignores freeze-frame PIDs)",
+        "latencyMs": 0
+      }
+    },
+    {
+      "id": "ADV01-negative-rpm",
+      "category": "Adversarial",
+      "description": "Negative engine RPM (-500 RPM) — physically impossible, must reject with HTTP 400",
+      "source": "Corrupted CAN Frame Injection",
+      "carSense": {
+        "passed": true,
+        "httpStatus": 400,
+        "urgency": null,
+        "rootCauseTitle": "Invalid RPM telemetry reading (must be 0 - 18000).",
+        "latencyMs": 0.006,
+        "failureReasons": []
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "nominal",
+        "title": "No code provided",
+        "action": "None (ignores freeze-frame PIDs)",
+        "latencyMs": 0
+      }
+    },
+    {
+      "id": "ADV02-impossible-fuel-trim",
+      "category": "Adversarial",
+      "description": "Short-Term Fuel Trim +500% (SAE J1979 hardware limit is -100% to +100%) — must reject with HTTP 400",
+      "source": "Out-of-Bounds PID Scaling Attack",
+      "carSense": {
+        "passed": false,
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCauseTitle": "Post-MAF Intake Vacuum Leak (Cracked PCV Hose / Gasket)",
+        "latencyMs": 0.008,
+        "failureReasons": [
+          "Expected HTTP 400, got 200"
+        ]
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "nominal",
+        "title": "No code provided",
+        "action": "None (ignores freeze-frame PIDs)",
+        "latencyMs": 0
+      }
+    },
+    {
+      "id": "ADV03-negative-vehicle-speed",
+      "category": "Adversarial",
+      "description": "Negative vehicle speed (-80 km/h) — SAE J1979 PID 0x0D is unsigned 0..255 km/h, must reject with HTTP 400",
+      "source": "Unsigned Byte Overflow Attack",
+      "carSense": {
+        "passed": false,
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCauseTitle": "Closed-Loop Air/Fuel Equilibrium Maintained",
+        "latencyMs": 0.003,
+        "failureReasons": [
+          "Expected HTTP 400, got 200"
+        ]
+      },
+      "competitorObdCodeLookup": {
+        "passed": false,
+        "urgency": "nominal",
+        "title": "No code provided",
+        "action": "None (ignores freeze-frame PIDs)",
+        "latencyMs": 0
+      }
+    }
+  ]
+}

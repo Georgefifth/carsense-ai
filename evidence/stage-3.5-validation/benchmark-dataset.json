@@ -1,0 +1,410 @@
+{
+  "metadata": {
+    "title": "CarSense AI — Real-World OBD-II & Freeze-Frame Telemetry Benchmark",
+    "version": "1.0.0",
+    "created": "2026-11-02",
+    "sources": [
+      {
+        "name": "elm327-obd (DTC Severity & Guidance Suite)",
+        "url": "https://github.com/jeffcaldwellca/elm327-obd/blob/main/tests/test_dtc_guide.py",
+        "license": "GPL-2.0",
+        "groundTruth": "Authoritative severity levels (stop/soon/low/monitor) and PID watchlists"
+      },
+      {
+        "name": "obd-code-lookup (Open-Source OBD-II Lookup Model)",
+        "url": "https://github.com/tobyhattenburg-beep/obd-code-lookup/blob/main/obd-model.js",
+        "license": "Public GitHub Repository",
+        "groundTruth": "50+ real-world DTC descriptions, severities, and action recommendations"
+      },
+      {
+        "name": "python-OBD (Standard SAE J1979 / J2012 DTC & PID Tables)",
+        "url": "https://github.com/brendan-w/python-OBD",
+        "license": "GPL-2.0",
+        "groundTruth": "SAE J1979 Mode 01 PID scaling and 2,066 standard DTC definitions"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "B01-nominal-cruise",
+      "category": "Basic",
+      "source": "SAE J1979 Baseline",
+      "description": "Healthy highway cruise at 65 mph with stoichiometric fuel trims",
+      "input": {
+        "vehicleModel": "2024 Honda Civic 1.5T",
+        "dtcCodes": [],
+        "pids": { "rpm": 1850, "speedKmh": 105, "coolantTempC": 90, "stftPercent": 0.4, "ltftPercent": 1.1, "mafGramsSec": 14.3, "batteryVoltageV": 14.1, "engineLoadPercent": 28 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCausePattern": "Equilibrium|Nominal|No Faults"
+      }
+    },
+    {
+      "id": "B02-p0171-vacuum-leak",
+      "category": "Basic",
+      "source": "obd-code-lookup & elm327-obd",
+      "description": "P0171 System Too Lean (Bank 1) with STFT pegged at +24.8% at idle and low MAF",
+      "input": {
+        "vehicleModel": "2021 Toyota RAV4 2.5L",
+        "dtcCodes": [{ "code": "P0171", "title": "System Too Lean (Bank 1)", "severity": "caution" }],
+        "pids": { "rpm": 700, "speedKmh": 0, "coolantTempC": 90, "stftPercent": 24.8, "ltftPercent": 18.5, "mafGramsSec": 1.7, "batteryVoltageV": 13.8, "engineLoadPercent": 21 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCausePattern": "Vacuum Leak|PCV|Unmetered"
+      }
+    },
+    {
+      "id": "B03-p0303-cylinder-misfire",
+      "category": "Basic",
+      "source": "obd-code-lookup (P0303 HIGH)",
+      "description": "P0303 Cylinder 3 Misfire under 64% load with catalyst thermal risk",
+      "input": {
+        "vehicleModel": "2020 Ford F-150 3.5L EcoBoost",
+        "dtcCodes": [{ "code": "P0303", "title": "Cylinder 3 Misfire Detected", "severity": "critical" }],
+        "pids": { "rpm": 1980, "speedKmh": 82, "coolantTempC": 98, "stftPercent": 18.8, "ltftPercent": 4.8, "mafGramsSec": 31.0, "batteryVoltageV": 14.0, "engineLoadPercent": 64 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "critical",
+        "rootCausePattern": "Ignition Coil|Spark|Misfire"
+      }
+    },
+    {
+      "id": "B04-p0562-alternator-sag",
+      "category": "Basic",
+      "source": "obd-code-lookup & elm327-obd (P0562)",
+      "description": "P0562 System Voltage Low with 11.4V battery discharge at idle",
+      "input": {
+        "vehicleModel": "2022 Subaru Outback 2.5i",
+        "dtcCodes": [{ "code": "P0562", "title": "System Voltage Low", "severity": "caution" }],
+        "pids": { "rpm": 740, "speedKmh": 0, "coolantTempC": 92, "stftPercent": 3.5, "ltftPercent": 1.4, "mafGramsSec": 3.2, "batteryVoltageV": 11.4, "engineLoadPercent": 35 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCausePattern": "Alternator|Charging|Voltage"
+      }
+    },
+    {
+      "id": "B05-p0a80-ev-pack-imbalance",
+      "category": "Basic",
+      "source": "SAE J2012 Hybrid/EV Standard",
+      "description": "P0A80 EV High Voltage Battery Pack cell brick imbalance",
+      "input": {
+        "vehicleModel": "2023 Tesla Model 3 Long Range",
+        "dtcCodes": [{ "code": "P0A80", "title": "Replace Hybrid/EV Battery Pack", "severity": "caution" }],
+        "pids": { "rpm": 4900, "speedKmh": 100, "coolantTempC": 36, "stftPercent": 0, "ltftPercent": 0, "mafGramsSec": 0, "batteryVoltageV": 374.0, "engineLoadPercent": 40 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCausePattern": "High Voltage|Module|Cell|Battery"
+      }
+    },
+    {
+      "id": "I01-p0172-system-too-rich",
+      "category": "Intermediate",
+      "source": "obd-code-lookup (P0172)",
+      "description": "P0172 System Too Rich (Bank 1) with deeply negative STFT (-23.5%) indicating leaking injector or stuck purge valve",
+      "input": {
+        "vehicleModel": "2019 Mazda CX-5 2.5L",
+        "dtcCodes": [{ "code": "P0172", "title": "System Too Rich (Bank 1)" }],
+        "pids": { "rpm": 780, "speedKmh": 0, "coolantTempC": 91, "stftPercent": -23.5, "ltftPercent": -16.2, "mafGramsSec": 3.8, "batteryVoltageV": 14.1, "engineLoadPercent": 24 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCausePattern": "Rich|Leaking Fuel Injector|Purge Valve"
+      }
+    },
+    {
+      "id": "I02-p0128-thermostat-stuck-open",
+      "category": "Intermediate",
+      "source": "obd-code-lookup (P0128)",
+      "description": "P0128 Coolant Temperature Below Thermostat Regulating Temperature (66°C after 20 min highway drive)",
+      "input": {
+        "vehicleModel": "2018 Jeep Grand Cherokee 3.6L",
+        "dtcCodes": [{ "code": "P0128", "title": "Coolant Thermostat Below Regulating Temp" }],
+        "pids": { "rpm": 2100, "speedKmh": 100, "coolantTempC": 66, "stftPercent": 2.5, "ltftPercent": 1.8, "mafGramsSec": 18.2, "batteryVoltageV": 14.2, "engineLoadPercent": 32 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCausePattern": "Thermostat|Stuck Open|Coolant"
+      }
+    },
+    {
+      "id": "I03-p0420-catalyst-efficiency",
+      "category": "Intermediate",
+      "source": "obd-code-lookup & elm327-obd (P0420)",
+      "description": "P0420 Catalyst System Efficiency Below Threshold (Bank 1)",
+      "input": {
+        "vehicleModel": "2017 Subaru Forester 2.5i",
+        "dtcCodes": [{ "code": "P0420", "title": "Catalyst System Efficiency Below Threshold (Bank 1)" }],
+        "pids": { "rpm": 2050, "speedKmh": 96, "coolantTempC": 91, "stftPercent": 0.8, "ltftPercent": 1.5, "mafGramsSec": 15.6, "batteryVoltageV": 14.1, "engineLoadPercent": 30 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCausePattern": "Catalytic Converter|Catalyst|Exhaust Leak"
+      }
+    },
+    {
+      "id": "I04-p0455-evap-gas-cap-leak",
+      "category": "Intermediate",
+      "source": "obd-code-lookup & elm327-obd (P0455)",
+      "description": "P0455 Evaporative Emission System Leak Detected (Large Leak / Loose Gas Cap)",
+      "input": {
+        "vehicleModel": "2020 Hyundai Tucson 2.0L",
+        "dtcCodes": [{ "code": "P0455", "title": "EVAP System Large Leak Detected" }],
+        "pids": { "rpm": 1600, "speedKmh": 65, "coolantTempC": 89, "stftPercent": 0.2, "ltftPercent": 0.5, "mafGramsSec": 10.4, "batteryVoltageV": 14.0, "engineLoadPercent": 25 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCausePattern": "Gas Cap|EVAP|Purge"
+      }
+    },
+    {
+      "id": "I05-p0101-maf-performance",
+      "category": "Intermediate",
+      "source": "obd-code-lookup (P0101)",
+      "description": "P0101 Mass Air Flow Sensor Range/Performance Problem",
+      "input": {
+        "vehicleModel": "2019 Nissan Altima 2.5L",
+        "dtcCodes": [{ "code": "P0101", "title": "Mass Air Flow Circuit Range/Performance" }],
+        "pids": { "rpm": 1500, "speedKmh": 50, "coolantTempC": 90, "stftPercent": 11.4, "ltftPercent": 9.8, "mafGramsSec": 2.1, "batteryVoltageV": 14.1, "engineLoadPercent": 29 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCausePattern": "Mass Air Flow|MAF"
+      }
+    },
+    {
+      "id": "A01-dual-bank-lean-p0171-p0174",
+      "category": "Advanced",
+      "source": "obd-code-lookup (P0171 + P0174 V6 Shared Intake)",
+      "description": "Simultaneous P0171 (Bank 1 Lean) + P0174 (Bank 2 Lean) on V6 engine confirming shared upstream intake/MAF leak",
+      "input": {
+        "vehicleModel": "2020 Toyota Tacoma 3.5L V6",
+        "dtcCodes": [
+          { "code": "P0171", "title": "System Too Lean (Bank 1)" },
+          { "code": "P0174", "title": "System Too Lean (Bank 2)" }
+        ],
+        "pids": { "rpm": 680, "speedKmh": 0, "coolantTempC": 90, "stftPercent": 23.8, "ltftPercent": 19.2, "mafGramsSec": 2.0, "batteryVoltageV": 13.9, "engineLoadPercent": 22 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "caution",
+        "rootCausePattern": "Vacuum Leak|Intake|MAF"
+      }
+    },
+    {
+      "id": "A02-unlatched-severe-overheating",
+      "category": "Advanced",
+      "source": "elm327-obd (P0217 Overtemperature STOP condition)",
+      "description": "Engine boiling at 119°C coolant temperature BEFORE ECU latches a confirmed DTC code",
+      "input": {
+        "vehicleModel": "2018 BMW 330i 2.0T",
+        "dtcCodes": [],
+        "pids": { "rpm": 2400, "speedKmh": 90, "coolantTempC": 119, "stftPercent": 2.0, "ltftPercent": 1.0, "mafGramsSec": 18.0, "batteryVoltageV": 14.0, "engineLoadPercent": 45 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "critical",
+        "rootCausePattern": "Overheat|Coolant|Thermal|Water Pump"
+      }
+    },
+    {
+      "id": "A03-p0524-oil-pressure-too-low",
+      "category": "Advanced",
+      "source": "elm327-obd (P0524 Mandatory STOP list)",
+      "description": "P0524 Engine Oil Pressure Too Low — immediate mechanical seizure risk",
+      "input": {
+        "vehicleModel": "2021 Chevrolet Silverado 5.3L V8",
+        "dtcCodes": [{ "code": "P0524", "title": "Engine Oil Pressure Too Low" }],
+        "pids": { "rpm": 1800, "speedKmh": 60, "coolantTempC": 96, "stftPercent": 0.5, "ltftPercent": 0.8, "mafGramsSec": 22.0, "batteryVoltageV": 14.1, "engineLoadPercent": 35 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "critical",
+        "rootCausePattern": "Oil Pressure|Oil Pump|Lubrication"
+      }
+    },
+    {
+      "id": "A04-u0100-lost-comm-ecm",
+      "category": "Advanced",
+      "source": "obd-code-lookup (U0100 HIGH)",
+      "description": "U0100 Lost Communication with ECM/PCM on CAN Bus",
+      "input": {
+        "vehicleModel": "2021 Volkswagen Golf GTI",
+        "dtcCodes": [{ "code": "U0100", "title": "Lost Communication with ECM/PCM" }],
+        "pids": { "rpm": 0, "speedKmh": 0, "coolantTempC": 85, "stftPercent": 0, "ltftPercent": 0, "mafGramsSec": 0, "batteryVoltageV": 12.4, "engineLoadPercent": 0 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "critical",
+        "rootCausePattern": "CAN Bus|Communication|ECM"
+      }
+    },
+    {
+      "id": "E01-key-on-engine-off",
+      "category": "Edge",
+      "source": "SAE J1979 Boundary (KOEO)",
+      "description": "Key On Engine Off (RPM = 0, Voltage = 12.6V resting battery, 0 DTCs) — should NOT false-alarm as alternator failure",
+      "input": {
+        "vehicleModel": "2023 Mazda3 2.5S",
+        "dtcCodes": [],
+        "pids": { "rpm": 0, "speedKmh": 0, "coolantTempC": 25, "stftPercent": 0, "ltftPercent": 0, "mafGramsSec": 0, "batteryVoltageV": 12.6, "engineLoadPercent": 0 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCausePattern": "Equilibrium|Nominal|No Faults"
+      }
+    },
+    {
+      "id": "E02-high-rpm-redline-clean",
+      "category": "Edge",
+      "source": "SAE J1979 High-Load WOT",
+      "description": "Wide-open throttle 6,800 RPM track acceleration with normal temperatures and 0 DTCs",
+      "input": {
+        "vehicleModel": "2024 Porsche 718 Cayman",
+        "dtcCodes": [],
+        "pids": { "rpm": 6800, "speedKmh": 165, "coolantTempC": 94, "stftPercent": 1.8, "ltftPercent": 0.9, "mafGramsSec": 115.0, "batteryVoltageV": 14.2, "engineLoadPercent": 92 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCausePattern": "Equilibrium|Nominal|No Faults"
+      }
+    },
+    {
+      "id": "E03-ev-high-voltage-nominal",
+      "category": "Edge",
+      "source": "EV Telemetry Baseline",
+      "description": "EV cruising with 392V traction battery pack and 0 DTCs",
+      "input": {
+        "vehicleModel": "2024 Hyundai Ioniq 5",
+        "dtcCodes": [],
+        "pids": { "rpm": 5200, "speedKmh": 110, "coolantTempC": 34, "stftPercent": 0, "ltftPercent": 0, "mafGramsSec": 0, "batteryVoltageV": 392.0, "engineLoadPercent": 35 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCausePattern": "Equilibrium|Nominal|No Faults"
+      }
+    },
+    {
+      "id": "E04-missing-pids-object-with-dtc",
+      "category": "Edge",
+      "source": "Partial Freeze-Frame Edge Case",
+      "description": "Empty pids object {} submitted alongside valid P0301 misfire DTC",
+      "input": {
+        "vehicleModel": "2019 Honda Accord",
+        "dtcCodes": [{ "code": "P0301", "title": "Cylinder 1 Misfire Detected" }],
+        "pids": {}
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "critical",
+        "rootCausePattern": "Ignition Coil|Spark|Misfire"
+      }
+    },
+    {
+      "id": "N01-cold-start-warmup",
+      "category": "Negative",
+      "source": "SAE Open-Loop Cold Start",
+      "description": "Morning cold start at 38°C coolant temp with +3.8% STFT and 0 DTCs — must NOT trigger thermostat or lean fault",
+      "input": {
+        "vehicleModel": "2022 Toyota Camry",
+        "dtcCodes": [],
+        "pids": { "rpm": 1150, "speedKmh": 0, "coolantTempC": 38, "stftPercent": 3.8, "ltftPercent": 1.2, "mafGramsSec": 4.5, "batteryVoltageV": 14.3, "engineLoadPercent": 24 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCausePattern": "Equilibrium|Nominal|No Faults"
+      }
+    },
+    {
+      "id": "N02-highway-hill-climb-load",
+      "category": "Negative",
+      "source": "Normal Highway Grade Load",
+      "description": "Climbing mountain grade at 75% engine load, 96°C coolant, +4.2% STFT, 0 DTCs — must remain nominal",
+      "input": {
+        "vehicleModel": "2023 Subaru Crosstrek",
+        "dtcCodes": [],
+        "pids": { "rpm": 3400, "speedKmh": 115, "coolantTempC": 96, "stftPercent": 4.2, "ltftPercent": 2.1, "mafGramsSec": 42.0, "batteryVoltageV": 14.1, "engineLoadPercent": 75 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCausePattern": "Equilibrium|Nominal|No Faults"
+      }
+    },
+    {
+      "id": "N03-smart-alternator-eco-mode",
+      "category": "Negative",
+      "source": "Modern Smart Alternator Deceleration Mode",
+      "description": "Modern AGM battery resting at 12.7V during coasting with 0 DTCs — must NOT false-alarm as alternator failure",
+      "input": {
+        "vehicleModel": "2023 BMW X3",
+        "dtcCodes": [],
+        "pids": { "rpm": 1200, "speedKmh": 70, "coolantTempC": 91, "stftPercent": -0.5, "ltftPercent": 0.4, "mafGramsSec": 8.2, "batteryVoltageV": 12.7, "engineLoadPercent": 15 }
+      },
+      "expected": {
+        "httpStatus": 200,
+        "urgency": "nominal",
+        "rootCausePattern": "Equilibrium|Nominal|No Faults"
+      }
+    },
+    {
+      "id": "ADV01-negative-rpm",
+      "category": "Adversarial",
+      "source": "Corrupted CAN Frame Injection",
+      "description": "Negative engine RPM (-500 RPM) — physically impossible, must reject with HTTP 400",
+      "input": {
+        "vehicleModel": "Corrupted Frame",
+        "dtcCodes": [],
+        "pids": { "rpm": -500, "speedKmh": 50 }
+      },
+      "expected": {
+        "httpStatus": 400
+      }
+    },
+    {
+      "id": "ADV02-impossible-fuel-trim",
+      "category": "Adversarial",
+      "source": "Out-of-Bounds PID Scaling Attack",
+      "description": "Short-Term Fuel Trim +500% (SAE J1979 hardware limit is -100% to +100%) — must reject with HTTP 400",
+      "input": {
+        "vehicleModel": "Corrupted Frame",
+        "dtcCodes": [],
+        "pids": { "rpm": 1500, "stftPercent": 500 }
+      },
+      "expected": {
+        "httpStatus": 400
+      }
+    },
+    {
+      "id": "ADV03-negative-vehicle-speed",
+      "category": "Adversarial",
+      "source": "Unsigned Byte Overflow Attack",
+      "description": "Negative vehicle speed (-80 km/h) — SAE J1979 PID 0x0D is unsigned 0..255 km/h, must reject with HTTP 400",
+      "input": {
+        "vehicleModel": "Corrupted Frame",
+        "dtcCodes": [],
+        "pids": { "rpm": 1500, "speedKmh": -80 }
+      },
+      "expected": {
+        "httpStatus": 400
+      }
+    }
+  ]
+}

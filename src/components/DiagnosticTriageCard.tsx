@@ -51,6 +51,7 @@ export const DiagnosticTriageCard: React.FC<DiagnosticTriageCardProps> = ({
 
           <button
             onClick={onExportReport}
+            aria-label="Export diagnostic report"
             className="px-2.5 py-1.5 rounded bg-carbon-700 hover:bg-carbon-600 border border-carbon-600 text-slate-300 text-xs font-medium flex items-center gap-1.5 transition"
             title="Download diagnostic summary report"
           >

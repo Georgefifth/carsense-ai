@@ -143,3 +143,14 @@ evidence/
 | 5 | `evidence/stage-5-submission.md`，`submission/` 提交包，人类已提交 |
 
 每个阶段的详细验收标准，以对应的 prompt 文件末尾为准。
+
+## 项目架构与质量标准 (CarSense AI)
+
+- **项目名称**: CarSense AI — Connected Vehicle Telematics & Diagnostic Copilot
+- **线上部署 URL**: `https://remote-control-ai.vercel.app`
+- **GitHub 仓库**: `https://github.com/Georgefifth/carsense-ai`
+- **技术栈**: React 19 + TypeScript + Tailwind CSS v4 + Vite + Vercel Serverless Functions (`/api/diagnose`, `/api/mechanic`)
+- **测试与验证标准**:
+  - 构建与类型检查: `npm run build` 0 errors
+  - 单元与接口测试: `npm test` 100% pass
+  - 真实浏览器 QA: Playwright 桌面 (`1440x900`) 与移动 (`390x844`) 0 水平溢出、0 控制台错误、本地与线上一致通过。

@@ -122,3 +122,41 @@ test('POST /api/mechanic answers driving safety and cost questions accurately', 
   assert.equal(statusCode, 200);
   assert.match(body.reply, /NO, you should NOT drive/i);
 });
+
+test('Stage 3.5 Regression: POST /api/diagnose detects unlatched severe engine overheating (>112C)', () => {
+  const { statusCode, body } = invokeHandler(diagnoseHandler, 'POST', {
+    dtcCodes: [],
+    pids: { rpm: 2400, speedKmh: 90, coolantTempC: 119, batteryVoltageV: 14.0 },
+    vehicleModel: '2018 BMW 330i',
+  });
+
+  assert.equal(statusCode, 200);
+  assert.equal(body.triage.urgency, 'critical');
+  assert.match(body.triage.rootCauseTitle, /Overtemperature|Cooling/i);
+});
+
+test('Stage 3.5 Regression: POST /api/diagnose enforces CRITICAL urgency on P0524 oil pressure collapse', () => {
+  const { statusCode, body } = invokeHandler(diagnoseHandler, 'POST', {
+    dtcCodes: [{ code: 'P0524', title: 'Engine Oil Pressure Too Low' }],
+    pids: { rpm: 1800, speedKmh: 60, coolantTempC: 96, batteryVoltageV: 14.1 },
+    vehicleModel: '2021 Chevrolet Silverado',
+  });
+
+  assert.equal(statusCode, 200);
+  assert.equal(body.triage.urgency, 'critical');
+  assert.match(body.triage.rootCauseTitle, /Oil Pressure/i);
+});
+
+test('Stage 3.5 Regression: POST /api/diagnose rejects impossible STFT (+500%) and negative speed (-80 km/h)', () => {
+  const res1 = invokeHandler(diagnoseHandler, 'POST', {
+    dtcCodes: [],
+    pids: { rpm: 1500, stftPercent: 500 },
+  });
+  assert.equal(res1.statusCode, 400);
+
+  const res2 = invokeHandler(diagnoseHandler, 'POST', {
+    dtcCodes: [],
+    pids: { rpm: 1500, speedKmh: -80 },
+  });
+  assert.equal(res2.statusCode, 400);
+});

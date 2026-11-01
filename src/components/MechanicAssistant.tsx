@@ -118,6 +118,7 @@ export const MechanicAssistant: React.FC<MechanicAssistantProps> = ({
         />
         <button
           type="submit"
+          aria-label="Send message"
           disabled={!inputText.trim()}
           className="px-3 py-2 rounded bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 disabled:hover:bg-cyan-600 text-black font-bold text-xs flex items-center gap-1 transition"
         >

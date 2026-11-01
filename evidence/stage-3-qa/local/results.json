@@ -1,0 +1,172 @@
+{
+  "base": "http://localhost:4173",
+  "browser": "firefox",
+  "headed": false,
+  "startedAt": "2026-11-01T18:52:27.160Z",
+  "finishedAt": "2026-11-01T18:52:34.651Z",
+  "summary": {
+    "total": 12,
+    "pass": 12,
+    "fail": 0
+  },
+  "results": [
+    {
+      "viewport": "desktop",
+      "id": "s1-landing-first-visit",
+      "title": "P0: First visit renders cockpit, gauges, and initial P0171 fault without overflow",
+      "status": "pass",
+      "ms": 400,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s1-landing-first-visit-landing-desktop.png"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "id": "s2-core-diagnostic-triage",
+      "title": "P0: Switch to P0303 Misfire, run AI Diagnostic Triage via API, and persist across reload",
+      "status": "pass",
+      "ms": 322,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s2-core-diagnostic-triage-triage-p0303-desktop.png"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "id": "s3-mechanic-copilot-chat",
+      "title": "P0: Consult AI Master Mechanic Copilot via quick chip and custom input",
+      "status": "pass",
+      "ms": 288,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s3-mechanic-copilot-chat-mechanic-chat-desktop.png"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "id": "s4-repair-and-readiness",
+      "title": "P1: Simulate Part Fix & Clear Codes, then run OBD-II I/M Drive Cycle Readiness",
+      "status": "pass",
+      "ms": 1325,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s4-repair-and-readiness-codes-cleared-desktop.png",
+        "evidence/stage-3-qa/local/screens/s4-repair-and-readiness-readiness-complete-desktop.png"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "id": "s5-custom-fault-injector",
+      "title": "P1: Inject custom P0562 Alternator undervoltage fault and verify telemetry gauges",
+      "status": "pass",
+      "ms": 430,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s5-custom-fault-injector-injected-p0562-desktop.png"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "id": "s6-raw-can-sniffer-and-accessibility",
+      "title": "P2: Toggle Raw CAN-FD Frame Sniffer drawer and verify keyboard accessibility",
+      "status": "pass",
+      "ms": 233,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s6-raw-can-sniffer-and-accessibility-raw-can-trace-desktop.png"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "id": "s1-landing-first-visit",
+      "title": "P0: First visit renders cockpit, gauges, and initial P0171 fault without overflow",
+      "status": "pass",
+      "ms": 253,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s1-landing-first-visit-landing-mobile.png"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "id": "s2-core-diagnostic-triage",
+      "title": "P0: Switch to P0303 Misfire, run AI Diagnostic Triage via API, and persist across reload",
+      "status": "pass",
+      "ms": 340,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s2-core-diagnostic-triage-triage-p0303-mobile.png"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "id": "s3-mechanic-copilot-chat",
+      "title": "P0: Consult AI Master Mechanic Copilot via quick chip and custom input",
+      "status": "pass",
+      "ms": 314,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s3-mechanic-copilot-chat-mechanic-chat-mobile.png"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "id": "s4-repair-and-readiness",
+      "title": "P1: Simulate Part Fix & Clear Codes, then run OBD-II I/M Drive Cycle Readiness",
+      "status": "pass",
+      "ms": 1379,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s4-repair-and-readiness-codes-cleared-mobile.png",
+        "evidence/stage-3-qa/local/screens/s4-repair-and-readiness-readiness-complete-mobile.png"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "id": "s5-custom-fault-injector",
+      "title": "P1: Inject custom P0562 Alternator undervoltage fault and verify telemetry gauges",
+      "status": "pass",
+      "ms": 344,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s5-custom-fault-injector-injected-p0562-mobile.png"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "id": "s6-raw-can-sniffer-and-accessibility",
+      "title": "P2: Toggle Raw CAN-FD Frame Sniffer drawer and verify keyboard accessibility",
+      "status": "pass",
+      "ms": 259,
+      "error": null,
+      "errors": [],
+      "warnings": [],
+      "screenshots": [
+        "evidence/stage-3-qa/local/screens/s6-raw-can-sniffer-and-accessibility-raw-can-trace-mobile.png"
+      ]
+    }
+  ]
+}

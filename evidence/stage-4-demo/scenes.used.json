@@ -1,0 +1,192 @@
+[
+  {
+    "name": "cold-open-live",
+    "session": "open",
+    "url": "https://remote-control-ai.vercel.app",
+    "actions": [
+      {
+        "type": "waitFor",
+        "sel": "text=Run AI Diagnostic Triage",
+        "timeout": 15000,
+        "__focus": null
+      },
+      {
+        "type": "click",
+        "sel": "text=Run AI Diagnostic Triage",
+        "__focus": [
+          854,
+          68.3
+        ]
+      },
+      {
+        "type": "wait",
+        "ms": 1200,
+        "__focus": null
+      },
+      {
+        "type": "spotlight",
+        "sel": "text=Post-MAF Intake Vacuum Leak",
+        "label": "★ MULTI-PID ROOT CAUSE",
+        "ms": 2200,
+        "__focus": [
+          543.6,
+          667.8
+        ]
+      },
+      {
+        "type": "wait",
+        "ms": 1200,
+        "__focus": null
+      }
+    ],
+    "vo": "When a 'Check Engine light' appears, CarSense AI correlates 'live CAN telemetry' in under 1ms—turning a cryptic 'P0171 fault code' into a verified '$28 vacuum hose' diagnosis.",
+    "pause": 0.3
+  },
+  {
+    "name": "slide-problem-compare",
+    "duration": 9.5,
+    "card": {
+      "html": "demo/slides.html",
+      "slide": "#slide-problem"
+    },
+    "vo": "Legacy scanners dump raw trouble codes with zero sensor context, tricking drivers into wasting '$250' on an oxygen sensor when 'fuel trim' and 'airflow' prove a simple intake leak.",
+    "pause": 0.3
+  },
+  {
+    "name": "slide-architecture",
+    "duration": 10,
+    "card": {
+      "html": "demo/slides.html",
+      "slide": "#slide-architecture"
+    },
+    "vo": "Our architecture ingests '20Hz SAE J1979' streams, pins the '10-second freeze-frame' window, and runs cross-sensor causal physics on our '/api/diagnose' engine.",
+    "pause": 0.3
+  },
+  {
+    "name": "live-critical-triage",
+    "session": "app",
+    "url": "https://remote-control-ai.vercel.app",
+    "actions": [
+      {
+        "type": "waitFor",
+        "sel": "button[aria-label='Open Fault Injector']",
+        "timeout": 10000,
+        "__focus": null
+      },
+      {
+        "type": "click",
+        "sel": "button[aria-label='Open Fault Injector']",
+        "__focus": [
+          1237.3,
+          25.3
+        ]
+      },
+      {
+        "type": "waitFor",
+        "sel": "text=P0303 Flashing Misfire",
+        "timeout": 10000,
+        "__focus": null
+      },
+      {
+        "type": "click",
+        "sel": "text=P0303 Flashing Misfire",
+        "__focus": [
+          1075.6,
+          379.1
+        ]
+      },
+      {
+        "type": "click",
+        "sel": "text=Apply Injected Telemetry",
+        "__focus": [
+          1113.8,
+          780.3
+        ]
+      },
+      {
+        "type": "wait",
+        "ms": 1200,
+        "__focus": null
+      },
+      {
+        "type": "click",
+        "sel": "text=Can I drive 40 miles home with this?",
+        "__focus": [
+          1230.9,
+          997.7
+        ]
+      },
+      {
+        "type": "wait",
+        "ms": 1800,
+        "__focus": null
+      }
+    ],
+    "vo": "Injecting a 'Cylinder 3 misfire' under 65% load triggers an immediate 'STOP verdict' and grounds our 'AI Master Mechanic' to warn of '$1,200 catalyst melt' risk.",
+    "pause": 0.3
+  },
+  {
+    "name": "live-repair-readiness",
+    "session": "app",
+    "actions": [
+      {
+        "type": "waitFor",
+        "sel": "text=Simulate Part Fix & Clear",
+        "timeout": 10000,
+        "__focus": null
+      },
+      {
+        "type": "click",
+        "sel": "text=Simulate Part Fix & Clear",
+        "__focus": [
+          952.4,
+          632.9
+        ]
+      },
+      {
+        "type": "wait",
+        "ms": 1000,
+        "__focus": null
+      },
+      {
+        "type": "click",
+        "sel": "button[aria-label='Open I/M Readiness Monitors']",
+        "__focus": [
+          1365.6,
+          31.7
+        ]
+      },
+      {
+        "type": "waitFor",
+        "sel": "text=Run Drive Cycle Complete",
+        "timeout": 10000,
+        "__focus": null
+      },
+      {
+        "type": "click",
+        "sel": "text=Run Drive Cycle Complete",
+        "__focus": [
+          1053.6,
+          835.6
+        ]
+      },
+      {
+        "type": "wait",
+        "ms": 1800,
+        "__focus": null
+      }
+    ],
+    "vo": "After simulating the 'coil replacement', CarSense AI clears stored codes, resets fuel trims, and verifies all '6 of 6 OBD-II readiness' monitors pass inspection.",
+    "pause": 0.3
+  },
+  {
+    "name": "slide-benchmark-proof",
+    "duration": 9.5,
+    "card": {
+      "html": "demo/slides.html",
+      "slide": "#slide-benchmark"
+    },
+    "vo": "Validated across '24 real-world cases', CarSense AI achieved '100% diagnostic accuracy' in under '0.25ms', outperforming static code lookups by '70.8 percentage points'.",
+    "pause": 0.4
+  }
+]
